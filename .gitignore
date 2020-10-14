@@ -1,3 +1,6 @@
+# Prevent upload of api key
+config.js
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -30,12 +30,12 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
     }
     // find color based of depth in km
     function getColor(d) {
-        return d > 500 ? '#800026' :
-               d > 200  ? '#BD0026' :
-               d > 100  ? '#E31A1C' :
-               d > 50  ? '#FC4E2A' :
-               d > 20   ? '#FD8D3C' :
-               d > 0   ? '#FEB24C' :
+        return d >= 500 ? '#800026' :
+               d >= 200  ? '#BD0026' :
+               d >= 100  ? '#E31A1C' :
+               d >= 50  ? '#FC4E2A' :
+               d >= 20   ? '#FD8D3C' :
+               d >= 0   ? '#FEB24C' :
                           '#FFEDA0';
     }
 
@@ -91,7 +91,7 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
         37.09, -95.71
         ],
         zoom: 5,
-        layers: [streetmap, earthquakes]
+        layers: [satmap, earthquakes]
     });
 
     // Create a layer control
@@ -115,7 +115,7 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
                 '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + 'km<br>' : '+');
         }
 
         return div;

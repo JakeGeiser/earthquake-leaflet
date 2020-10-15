@@ -1,5 +1,5 @@
 # leaflet-challenge
-Welcome to leaflet-challenge! Included in the repository is a challenge to create a working leaflet map to display earthquake information from the USGS over the past week. The solution to the two parts are in Leaflet-Step-1 and Leaflet-Step-2 directories.
+Welcome to leaflet-challenge! Included in the repository is a challenge to create a working leaflet map to display earthquake information from the <a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php">USGS</a> over the past week. The solution to the two parts are in Leaflet-Step-1 and Leaflet-Step-2 directories.
 
 ## Leaflet-Step-2
 ![](images/satellite.png)

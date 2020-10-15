@@ -12,8 +12,9 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
     // Define a function we want to run once for each feature in the features array
     // Give each feature a popup describing the place and time of the earthquake
     function onEachQuake(feature, layer) {
-        layer.bindPopup("<h3>" + feature.properties.place +
-        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+        layer.bindPopup("<h3>Magnitude: " +feature.properties.mag + "<br>Depth: " +feature.geometry.coordinates[2]
+        +"km</h3><hr><p>"+ feature.properties.place +"</p>"
+        +"<p>" + new Date(feature.properties.time) + "</p>");
     }
     // Define function to change style of map markers
     function markerOpt(feature) {

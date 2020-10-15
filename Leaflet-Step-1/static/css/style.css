@@ -10,8 +10,11 @@ html {
 }
 
 .legend {
+  border-radius: 10px;
   line-height: 18px;
   color: #555;
+  background-color: white;
+  padding: 10px;
 }
 .legend i {
   width: 18px;

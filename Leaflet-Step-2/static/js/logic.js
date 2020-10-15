@@ -1,16 +1,19 @@
 // Store earthquate API endpoint inside quakeURL
 var quakeURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+var plateURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 
-// Perform a GET request to the query URL
-d3.json(quakeURL, function(data) {
-    // Once we get a response, send the data.features object to the createFeatures function
-    createQuakeMap(data.features);
+// Perform a GET request to the quake URL geojson
+d3.json(quakeURL, function(quakeData) {
+    // Perform a GET request to the plate URL geojson
+    d3.json(plateURL, function (plateTecData) {
+        createQuakeMap(quakeData.features,plateTecData.features);
+    });
   });
 
-function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dictionary format
-
+function createQuakeMap(earthquakeData,plateData) { // takes list of quakes in geoJSON dictionary format
+    //// Make the earthquake layer
     // Define a function we want to run once for each feature in the features array
-    // Give each feature a popup describing the place and time of the earthquake
+    // Give each feature a popup describing the magnitude, depth, place, and time of the earthquake
     function onEachQuake(feature, layer) {
         layer.bindPopup("<h3>Magnitude: " +feature.properties.mag + "<br>Depth: " +feature.geometry.coordinates[2]
         +"km</h3><hr><p>"+ feature.properties.place +"</p>"
@@ -39,10 +42,9 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
                d >= 0   ? '#FEB24C' :
                           '#FFEDA0';
     }
-
-
     // Create a GeoJSON layer containing the features array on the earthquakeData object
-    // Run the onEachFeature function once for each piece of data in the array
+    // Run the onEachQuake function once for each piece of data in the array
+    // Run the markerOpt function in pointToLayer to customize the marker
     var earthquakes = L.geoJSON(earthquakeData, {
         onEachFeature: onEachQuake,
         pointToLayer: function (feature, latlng) {
@@ -50,6 +52,19 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
           }
     });
 
+    //// Make the techtonic plates layer
+    // Define function for the style
+    function lineOpt(feature) {
+        return {
+            opacity: 1,
+            color: 'orange',
+            fillOpacity: 0
+        };
+    }
+    // Create GeoJSON layer containing the features array of the techtonic plateData object
+    var techPlates = L.geoJson(plateData, {style: lineOpt})
+
+    //// Now import different tiles for the map
     // Define streetmap and darkmap layers
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -81,9 +96,10 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
         "Satellite": satmap
     };
 
-    // Create overlay object to hold our overlay layer
+    // Create overlay object to hold our overlay layers
     var overlayMaps = {
-        Earthquakes: earthquakes
+        "Earthquakes": earthquakes,
+        "Techtonic Plates": techPlates
     };
 
     // Create our map, giving it the streetmap and earthquakes layers to display on load

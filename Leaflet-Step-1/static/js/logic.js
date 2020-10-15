@@ -42,7 +42,8 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
 
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
-    // Run the onEachFeature function once for each piece of data in the array
+    // Run the onEachQuake function once for each piece of data in the array
+    // Run the markerOpt function in pointToLayer to customize the marker
     var earthquakes = L.geoJSON(earthquakeData, {
         onEachFeature: onEachQuake,
         pointToLayer: function (feature, latlng) {
@@ -91,7 +92,7 @@ function createQuakeMap(earthquakeData) { // takes list of quakes in geoJSON dic
         center: [
         37.09, -95.71
         ],
-        zoom: 5,
+        zoom: 3,
         layers: [satmap, earthquakes]
     });
 
